@@ -1,7 +1,5 @@
 import SendMessageForm from "./SendMessageForm";
 
-export const dynamic = "force-dynamic";
-
 export default async function SendPage({
     params,
 }: {

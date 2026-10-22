@@ -9,5 +9,4 @@ Dockerfile
 docker-compose.yml
 .dockerignore
 coverage
-verification/
 .eslint*
