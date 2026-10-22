@@ -11,8 +11,13 @@ messages whenever you want, and share or delete your link at any time.
 
 - Anonymous messages: senders log in with nothing and provide no identity.
 - Real accounts on the receiving end: email + 6-digit code verification.
+- Usernames are only claimed in the database once the code is verified;
+  unverified signups reserve a name for at most 24h and then free it
+  automatically.
 - Sign in with email or username.
 - Private dashboard with all messages, newest first.
+- Send an anonymous message to any username straight from the dashboard;
+  names are checked live before you send.
 - Pause/resume accepting messages with one toggle.
 - Ships as a Docker image; a compose file brings up the app, MongoDB and a
   development mailbox, all on one internal network.
@@ -86,6 +91,7 @@ npm run dev                 # http://localhost:3000
 ## Limits
 
 - An inbox stores up to 300 messages.
+- Unverified signups (email + username reservation) expire after 24h.
 - No rate limiting on the public send endpoint yet.
 - Group or private chat between users is not built yet.
 

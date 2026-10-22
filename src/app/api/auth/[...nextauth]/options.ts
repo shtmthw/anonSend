@@ -2,6 +2,7 @@ import { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import bcrypt from 'bcryptjs'
 import { UserModel } from '@/model/user'
+import { PendingUserModel } from '@/model/pendingUser'
 import DBconnect from '@/lib/DBconnect'
 
 export const authOptions: NextAuthOptions = {
@@ -31,6 +32,15 @@ export const authOptions: NextAuthOptions = {
                 });
 
                 if (!user) {
+                    // Empty by failure mode lookup: a signup that hasn't done
+                    // its email verification yet is not in the users
+                    // collection yet — guide them instead of "No user found".
+                    const pendingPrompt = await PendingUserModel.findOne({
+                        $or: [{ email: identifier }, { username: identifier }]
+                    }).select('_id');
+                    if (pendingPrompt) {
+                        throw new Error('Verify your account first — check your email for the verification code.');
+                    }
                     throw new Error("No user found!");
                 }
 

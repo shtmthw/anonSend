@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
+import UsernameBar from "./UsernameBar";
 
 type Message = { content: string; date: string };
 
@@ -129,6 +130,11 @@ export default function DashboardPage() {
                         }`}
                     />
                 </button>
+            </section>
+
+            <section className="rounded-2xl border border-black/[.08] dark:border-white/[.1] p-4 sm:p-5 flex flex-col gap-2">
+                <h2 className="text-sm font-medium">Send an anonymous message</h2>
+                <UsernameBar />
             </section>
 
             <section className="flex flex-col gap-3">
