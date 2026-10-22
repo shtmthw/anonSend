@@ -15,9 +15,8 @@ messages whenever you want, and share or delete your link at any time.
   unverified signups reserve a name for at most 24h and then free it
   automatically.
 - Sign in with email or username.
-- Private dashboard with all messages, newest first.
-- Send an anonymous message to any username straight from the dashboard;
-  names are checked live before you send.
+- Private dashboard: read messages, copy your personal link, and send
+  anonymous messages to any username with a live-checked composer.
 - Pause/resume accepting messages with one toggle.
 - Ships as a Docker image; a compose file brings up the app, MongoDB and a
   development mailbox, all on one internal network.

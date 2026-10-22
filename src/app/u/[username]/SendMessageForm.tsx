@@ -137,7 +137,7 @@ export default function SendMessageForm({ username }: { username: string }) {
                     submit();
                 }
             }}
-            className="flex w-full max-w-md flex-col gap-4 rounded-2xl border border-black/[.08] dark:border-white/[.1] p-6"
+            className="flex w-full max-w-md flex-col gap-4 rounded-2xl border border-black/[.08] p-6 dark:border-white/[.1] sm:max-w-xl sm:p-8 lg:max-w-2xl"
         >
             <div className="flex items-center gap-3">
                 <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-emerald-500/15 text-lg font-bold text-emerald-500">
@@ -154,11 +154,11 @@ export default function SendMessageForm({ username }: { username: string }) {
                 value={message}
                 onChange={(e) => setMessage(e.target.value.slice(0, MAX_LEN))}
                 placeholder="Write your message… (Ctrl+Enter to send)"
-                rows={5}
+                rows={6}
                 required
                 minLength={2}
                 maxLength={MAX_LEN}
-                className="w-full rounded-lg border border-black/[.1] dark:border-white/[.15] bg-transparent px-3 py-2.5 text-sm outline-none focus:border-emerald-500 transition-colors resize-none"
+                className="w-full min-h-[160px] lg:min-h-[220px] rounded-lg border border-black/[.1] bg-transparent px-3 py-2.5 text-sm outline-none focus:border-emerald-500 transition-colors resize-y dark:border-white/[.15]"
             />
 
             <div className="flex items-center justify-between">
