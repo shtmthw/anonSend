@@ -39,7 +39,7 @@ export const authOptions: NextAuthOptions = {
                         $or: [{ email: identifier }, { username: identifier }]
                     }).select('_id');
                     if (pendingPrompt) {
-                        throw new Error('Verify your account first — check your email for the verification code.');
+                        throw new Error('Verify your account first — check your email for the verification code and signup again.');
                     }
                     throw new Error("No user found!");
                 }
