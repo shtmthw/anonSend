@@ -1,8 +1,8 @@
 import { Messages } from "@/model/user";
 
-export interface Apiresp{
-    success : Boolean,
-    message : String,
-    isAccpetingMsg?: Boolean,
-    messages? : Array<Messages>
+export interface Apiresp {
+    success: boolean;
+    message: string;
+    isAcceptingMsg?: boolean;
+    messages?: Array<Messages>;
 }

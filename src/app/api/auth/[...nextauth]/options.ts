@@ -10,35 +10,48 @@ export const authOptions: NextAuthOptions = {
             id: "credentials",
             name: "Credentials",
             credentials: {
-                email: { label: "Email", type: "text" },
+                email: { label: "Email or username", type: "text" },
                 password: { label: "Password", type: "password" }
             },
-            async authorize(credentials: any): Promise<any> {
+            async authorize(credentials: Record<string, string | undefined> | undefined) {
                 await DBconnect();
-                try {
-                    const user = await UserModel.findOne({
-                        $or: [{ email: credentials.identifier }] // Fixed field
-                    });
 
-                    if (!user) {
-                        throw new Error("No user found!");
-                    }
+                const identifier = (credentials?.identifier ?? credentials?.email ?? "")
+                    .trim()
+                    .toLowerCase();
+                const password = credentials?.password ?? "";
 
-                    if (!user.isVerified) {
-                        throw new Error("Please verify your account before continuing.");
-                    }
-
-                    const isPassMatching = await bcrypt.compare(credentials.password, user.password);
-
-                    if (!isPassMatching) {
-                        throw new Error("Password is incorrect!");
-                    }
-
-                    return user;
-
-                } catch (e: any) {
-                    throw new Error(`Error occurred while authenticating via authjs: ${e.message}`);
+                if (!identifier || !password) {
+                    throw new Error("Please provide your email/username and password.");
                 }
+
+                // Email OR username both work as the identifier.
+                const user = await UserModel.findOne({
+                    $or: [{ email: identifier }, { username: identifier }]
+                });
+
+                if (!user) {
+                    throw new Error("No user found!");
+                }
+
+                if (!user.isVerified) {
+                    throw new Error("Please verify your account before continuing.");
+                }
+
+                const isPassMatching = await bcrypt.compare(password, user.password);
+
+                if (!isPassMatching) {
+                    throw new Error("Password is incorrect!");
+                }
+
+                return {
+                    id: user._id!.toString(),
+                    _id: user._id!.toString(),
+                    username: user.username,
+                    email: user.email,
+                    isVerified: user.isVerified,
+                    isAcceptingMsg: user.isAcceptingMsg,
+                };
             }
         })
     ],
@@ -63,7 +76,7 @@ export const authOptions: NextAuthOptions = {
         }
     },
     pages: {
-        signIn: '/signIn' // Fixed typo
+        signIn: '/sign-in'
     },
     session: {
         strategy: 'jwt'
