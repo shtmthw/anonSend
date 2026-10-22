@@ -1,12 +1,11 @@
-# AnonSend — full stack: Next.js app + MongoDB, joined on the same network.
+# AnonSend — full stack: Next.js app + MongoDB + Mailpit on one network.
 #
-#   docker compose up
+#   docker compose up -d
 #
-# Everything (mail included) works out of the box:
-#   - MongoDB runs with credentials and a healthcheck on the anonsend network
-#   - Mailpit (optional profile) catches verification emails so you can test
-#     signup/verify without a real mail provider:   docker compose --profile maildev up
-#     then open http://localhost:8025 to read the OTP emails.
+# Open http://localhost:3000 for the site.
+# Verification emails land in Mailpit's inbox at http://localhost:8025
+# (dev default). For real email, set RESEND_API_KEY or a real SMTP_HOST
+# in .env and restart the app service.
 #
 # Override anything through your .env file (see .env.example).
 
@@ -55,12 +54,10 @@ services:
       start_period: 10s
     restart: unless-stopped
 
-  # Catch-all development mailbox for verification emails.
-  # Enable with: docker compose --profile maildev up
-  # Set in your .env: SMTP_HOST=mailpit, SMTP_PORT=1025, SMTP_USER=, SMTP_PASS=
+  # Dev mailbox that catches verification emails (web UI on :8025).
+  # Replace with real mail by setting RESEND_API_KEY or a real SMTP_HOST in .env.
   mailpit:
     image: axllent/mailpit:latest
-    profiles: ["maildev"]
     ports:
       - "8025:8025" # web UI to read caught emails
     restart: unless-stopped
