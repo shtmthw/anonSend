@@ -1,0 +1,88 @@
+# AnonSend — full stack: Next.js app + MongoDB, joined on the same network.
+#
+#   docker compose up
+#
+# Everything (mail included) works out of the box:
+#   - MongoDB runs with credentials and a healthcheck on the anonsend network
+#   - Mailpit (optional profile) catches verification emails so you can test
+#     signup/verify without a real mail provider:   docker compose --profile maildev up
+#     then open http://localhost:8025 to read the OTP emails.
+#
+# Override anything through your .env file (see .env.example).
+
+services:
+  app:
+    image: matthew552/anonsend:latest
+    build: . # build from source if you cloned the repo and pulled nothing
+    ports:
+      - "${APP_PORT:-3000}:3000"
+    environment:
+      NODE_ENV: production
+      NEXTAUTH_URL: ${NEXTAUTH_URL:-http://localhost:3000}
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:-}
+      # The app container talks to Mongo over the shared network by service
+      # name — hit http://localhost:3000 from your host, MongoDB stays internal.
+      MONGODB_URI: ${MONGODB_URI:-mongodb://admin:changeme@mongo:27017}
+      MONGODB_DB: ${MONGODB_DB:-main}
+      RESEND_API_KEY: ${RESEND_API_KEY:-}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+      SMTP_SECURE: ${SMTP_SECURE:-false}
+      MAIL_FROM: ${MAIL_FROM:-}
+    depends_on:
+      mongo:
+        condition: service_healthy
+    restart: unless-stopped
+
+  mongo:
+    image: mongo:7
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER:-admin}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-changeme}
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          'mongosh -u "$${MONGO_INITDB_ROOT_USERNAME}" -p "$${MONGO_INITDB_ROOT_PASSWORD}" --quiet --eval "db.adminCommand(''ping'').ok" | grep 1',
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+  # Catch-all development mailbox for verification emails.
+  # Enable with: docker compose --profile maildev up
+  # Set in your .env: SMTP_HOST=mailpit, SMTP_PORT=1025, SMTP_USER=, SMTP_PASS=
+  mailpit:
+    image: axllent/mailpit:latest
+    profiles: ["maildev"]
+    ports:
+      - "8025:8025" # web UI to read caught emails
+    restart: unless-stopped
+
+  # Optional Mongosh GUI. Enable with: docker compose --profile tools up
+  mongo-express:
+    image: mongo-express:latest
+    profiles: ["tools"]
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_USER:-admin}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_PASSWORD:-changeme}
+      ME_CONFIG_MONGODB_SERVER: mongo
+    depends_on:
+      mongo:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  mongo-data:
+
+networks:
+  default:
+    name: anonsend-net
