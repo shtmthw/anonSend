@@ -24,6 +24,7 @@ messages whenever you want, and share or delete your link at any time.
 ## Quick start
 
 ```bash
+git clone https://github.com/shtmthw/anonSend.git
 cp .env.example .env     # set NEXTAUTH_SECRET (openssl rand -base64 32)
 docker compose up -d
 ```
