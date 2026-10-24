@@ -21,6 +21,32 @@ messages whenever you want, and share or delete your link at any time.
 - Ships as a Docker image; a compose file brings up the app, MongoDB and a
   development mailbox, all on one internal network.
 
+
+## Screenshots  
+
+-Landing page when user is not logged/signed
+  <img width="1919" height="994" alt="Screenshot_20261024_162901" src="https://github.com/user-attachments/assets/4b9e3efb-52c1-42f2-aba6-af836b0c3dfa" />
+
+
+-Signing up
+  <img width="1919" height="994" alt="Screenshot_20261024_162944" src="https://github.com/user-attachments/assets/25e26a50-45e3-4457-b902-ee601a35eb52" />
+
+
+-providing OTP to be verified
+  <img width="1919" height="994" alt="Screenshot_20261024_163008" src="https://github.com/user-attachments/assets/6bdcbcc9-44ed-49f9-b3af-614b33e750da" />
+
+
+-Sending an user anonymous text
+  <img width="1919" height="994" alt="Screenshot_20261024_163140" src="https://github.com/user-attachments/assets/4e4256c6-0de2-4834-8c91-04bae35e0ec4" />
+
+  <img width="1919" height="994" alt="Screenshot_20261024_163505" src="https://github.com/user-attachments/assets/70e8bb9a-12ce-493a-a445-5793cb4d0b9d" />
+
+  
+-Dashboard overview
+  <img width="1919" height="994" alt="Screenshot_20261024_164104" src="https://github.com/user-attachments/assets/3ac20915-8b2e-4754-9dbf-0eb4d15d1637" />
+
+  
+
 ## Quick start
 
 ```bash
