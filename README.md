@@ -46,7 +46,7 @@ messages whenever you want, and share or delete your link at any time.
   <img width="1919" height="994" alt="Screenshot_20261024_163505" src="https://github.com/user-attachments/assets/70e8bb9a-12ce-493a-a445-5793cb4d0b9d" />
 
   
--Dashboard overview.
+- Dashboard overview.
   
   <img width="1919" height="994" alt="Screenshot_20261024_164104" src="https://github.com/user-attachments/assets/3ac20915-8b2e-4754-9dbf-0eb4d15d1637" />
 
